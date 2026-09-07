@@ -1,0 +1,11 @@
+FROM node:22-alpine
+
+RUN apk add --no-cache imagemagick
+
+WORKDIR /plugin
+COPY package.json main.js ./
+COPY tests ./tests
+
+RUN npm test
+
+CMD ["npm", "run", "test:imagemagick"]

@@ -1,0 +1,14 @@
+{
+  "name": "png-webp-companion",
+  "version": "0.5.0",
+  "private": true,
+  "description": "Development and cross-platform tests for PNG WebP Companion.",
+  "scripts": {
+    "check": "node --check main.js && node --check tests/slugify.test.js && node --check tests/imagemagick-detection.test.js && node --check tests/imagemagick-smoke.test.js",
+    "test": "npm run check && node tests/slugify.test.js && node tests/imagemagick-detection.test.js",
+    "test:imagemagick": "node tests/imagemagick-smoke.test.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

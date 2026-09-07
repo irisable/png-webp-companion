@@ -1,0 +1,9 @@
+{
+  "id": "png-webp-companion",
+  "name": "PNG WebP Companion",
+  "version": "0.5.0",
+  "minAppVersion": "1.4.0",
+  "description": "Preserves PNG originals, creates and links same-name WebP companions, follows renames, and normalizes PNG filenames. Requires ImageMagick.",
+  "author": "Iris",
+  "isDesktopOnly": true
+}
