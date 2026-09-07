@@ -25,6 +25,19 @@ links to use the WebP.
 Filename normalization is enabled by default and can be disabled in the plugin
 settings. Existing images are not renamed or converted in bulk at startup.
 
+## Usage
+
+1. Install [ImageMagick 7](https://imagemagick.org/script/download.php) and
+   enable the plugin.
+2. Paste, drag, or otherwise add a PNG to the vault. You can rename it before
+   or after conversion; the plugin keeps its companion synchronized.
+3. After the PNG finishes writing, the plugin creates a same-name WebP beside
+   it and updates verified image links to use the WebP. The PNG remains in
+   place.
+
+Open the plugin settings to disable filename normalization, specify a custom
+`magick` executable, or run detection again.
+
 ## Requirements and ImageMagick detection
 
 - Obsidian 1.4.0 or later on desktop.
