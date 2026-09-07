@@ -2,6 +2,7 @@
   "name": "png-webp-companion",
   "version": "0.5.0",
   "private": true,
+  "license": "MIT",
   "description": "Development and cross-platform tests for PNG WebP Companion.",
   "scripts": {
     "check": "node --check main.js && node --check tests/slugify.test.js && node --check tests/imagemagick-detection.test.js && node --check tests/imagemagick-smoke.test.js",

@@ -92,6 +92,10 @@ After the repository is hosted on GitHub, the included workflow runs simulated
 path/error branches on Intel macOS, Windows x64, and Linux x64. It also runs a
 real ImageMagick smoke conversion on Intel macOS, Windows x64, and Linux Docker.
 
+## License
+
+PNG WebP Companion is released under the [MIT License](LICENSE).
+
 ---
 
 ## 中文说明
@@ -109,3 +113,5 @@ Finder 等外部改名。它通过自己保存的 SHA-256 内容指纹识别改�
 `magick.exe` 的完整路径。检测时会在内存中实际编码一张极小的 WebP；若
 未安装 ImageMagick 7，或其 WebP 编码能力不可用，插件仍会正常加载，只
 暂停转换并给出一次提示，不会阻塞 Vault 加载或索引。
+
+本项目采用 [MIT License](LICENSE) 开源。
