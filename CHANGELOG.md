@@ -5,7 +5,7 @@ All notable changes to PNG WebP Companion are documented here.
 ## 0.5.0
 
 - Detect ImageMagick 7 through common macOS and Linux paths or the system
-  `PATH`, including `magick.exe` on Windows.
+  `PATH`, including `magick.exe` on Windows, and verify real WebP encoding.
 - Allow a custom ImageMagick executable path in plugin settings.
 - Keep the plugin loaded and pause conversion when ImageMagick is unavailable.
 - Add local detection tests, a real ImageMagick smoke test, a reproducible Linux

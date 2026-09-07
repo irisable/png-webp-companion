@@ -29,7 +29,7 @@ settings. Existing images are not renamed or converted in bulk at startup.
 
 - Obsidian 1.4.0 or later on desktop.
 - A local filesystem vault.
-- ImageMagick 7 with the `magick` executable.
+- ImageMagick 7 with the `magick` executable and working WebP encoding support.
 
 When the path setting is empty, the plugin tries:
 
@@ -39,7 +39,9 @@ When the path setting is empty, the plugin tries:
 - Windows, macOS, and Linux: `magick` or `magick.exe` through `PATH`.
 
 You can also enter the full executable path in the plugin settings and select
-**Detect**. If ImageMagick is unavailable, the plugin remains loaded but pauses
+**Detect**. Detection performs a tiny in-memory WebP conversion, so a binary
+that exists but lacks a working WebP encoder is not reported as usable. If the
+required capability is unavailable, the plugin remains loaded but pauses
 conversion. It shows one actionable notice and does not block vault loading or
 indexing.
 
@@ -104,5 +106,6 @@ Finder 等外部改名。它通过自己保存的 SHA-256 内容指纹识别改�
 
 插件默认自动检测 Apple Silicon Homebrew、Intel Mac Homebrew、Linux 常见
 路径以及 Windows/macOS/Linux 的 `PATH`。也可以在设置中填写 `magick` 或
-`magick.exe` 的完整路径。若没有安装 ImageMagick，插件仍会正常加载，只
+`magick.exe` 的完整路径。检测时会在内存中实际编码一张极小的 WebP；若
+未安装 ImageMagick 7，或其 WebP 编码能力不可用，插件仍会正常加载，只
 暂停转换并给出一次提示，不会阻塞 Vault 加载或索引。

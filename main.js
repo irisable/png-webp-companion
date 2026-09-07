@@ -62,8 +62,32 @@ async function detectImageMagick({
         maxBuffer: 1024 * 1024,
         timeout: MAGICK_PROBE_TIMEOUT_MS,
       });
-      const output = `${result?.stdout ?? ""}\n${result?.stderr ?? ""}`;
+      const stdout = Buffer.isBuffer(result?.stdout)
+        ? result.stdout.toString("utf8")
+        : (result?.stdout ?? "");
+      const stderr = Buffer.isBuffer(result?.stderr)
+        ? result.stderr.toString("utf8")
+        : (result?.stderr ?? "");
+      const output = `${stdout}\n${stderr}`;
       if (!/\bImageMagick\b/i.test(output)) continue;
+
+      const webpProbe = await run(
+        executable,
+        ["-size", "1x1", "xc:none", "webp:-"],
+        {
+          encoding: "buffer",
+          maxBuffer: 1024 * 1024,
+          timeout: MAGICK_PROBE_TIMEOUT_MS,
+        },
+      );
+      const webpBytes = Buffer.isBuffer(webpProbe?.stdout)
+        ? webpProbe.stdout
+        : Buffer.from(webpProbe?.stdout ?? "", "binary");
+      const hasWebpSignature =
+        webpBytes.length >= 12 &&
+        webpBytes.subarray(0, 4).toString("ascii") === "RIFF" &&
+        webpBytes.subarray(8, 12).toString("ascii") === "WEBP";
+      if (!hasWebpSignature) continue;
 
       return {
         executable,
@@ -233,7 +257,7 @@ class PngWebpCompanionSettingTab extends PluginSettingTab {
       this.plugin.magickProbeState === "available"
         ? `已检测到：${this.plugin.magickExecutable}\n${this.plugin.magickVersion}`
         : this.plugin.magickProbeState === "missing"
-          ? "未检测到 ImageMagick。插件保持加载，但暂停图片转换，不会影响 Vault 使用。"
+          ? "未检测到可用的 ImageMagick 7 WebP 转换能力。插件保持加载，但暂停图片转换，不会影响 Vault 使用。"
           : this.plugin.magickProbeState === "checking"
             ? "正在检测 ImageMagick…"
             : "留空时自动检测常见安装路径和 PATH；也可以填写 magick 或 magick.exe 的完整路径。";
@@ -347,12 +371,14 @@ class PngWebpCompanionPlugin extends Plugin {
     this.magickExecutable = null;
     this.magickVersion = "";
     this.magickProbeState = "missing";
-    console.warn(`${LOG_PREFIX} ImageMagick not found; conversion is paused`);
+    console.warn(
+      `${LOG_PREFIX} ImageMagick 7 with WebP encoding is unavailable; conversion is paused`,
+    );
 
     if (notifyIfMissing && !this.hasShownMissingNotice) {
       this.hasShownMissingNotice = true;
       new Notice(
-        "未检测到 ImageMagick。PNG WebP Companion 已暂停转换；Vault 可正常使用。请安装 ImageMagick，或在插件设置中指定 magick 路径。",
+        "未检测到可用的 ImageMagick 7 WebP 转换能力。PNG WebP Companion 已暂停转换；Vault 可正常使用。请安装支持 WebP 的 ImageMagick 7，或在插件设置中指定 magick 路径。",
         10000,
       );
     }
