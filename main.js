@@ -108,9 +108,15 @@ function isPng(vaultPath) {
   return /\.png$/i.test(vaultPath);
 }
 
-function shouldIgnore(vaultPath) {
+function shouldIgnore(vaultPath, configDir = ".obsidian") {
+  const normalizedConfigDir = normalizePath(configDir).replace(/\/+$/u, "");
+  const isInsideConfigDir =
+    normalizedConfigDir.length > 0 &&
+    (vaultPath === normalizedConfigDir ||
+      vaultPath.startsWith(`${normalizedConfigDir}/`));
+
   return (
-    vaultPath.startsWith(".obsidian/") ||
+    isInsideConfigDir ||
     vaultPath.startsWith(".trash/") ||
     vaultPath.includes("/.trash/")
   );
@@ -448,7 +454,10 @@ class PngWebpCompanionPlugin extends Plugin {
   }
 
   canHandle(vaultPath) {
-    return isPng(vaultPath) && !shouldIgnore(vaultPath);
+    return (
+      isPng(vaultPath) &&
+      !shouldIgnore(vaultPath, this.app.vault.configDir)
+    );
   }
 
   schedule(vaultPath) {
@@ -950,6 +959,7 @@ class PngWebpCompanionPlugin extends Plugin {
 PngWebpCompanionPlugin.__test = {
   detectImageMagick,
   imageMagickCandidates,
+  shouldIgnore,
   slugifyPngPath,
 };
 

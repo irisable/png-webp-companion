@@ -20,7 +20,7 @@ Module._load = function loadWithObsidianStub(request, parent, isMain) {
 const PluginClass = require("../main.js");
 Module._load = originalLoad;
 
-const { slugifyPngPath } = PluginClass.__test;
+const { shouldIgnore, slugifyPngPath } = PluginClass.__test;
 
 const cases = [
   ["My Image.png", "my-image.png"],
@@ -39,3 +39,19 @@ for (const [input, expected] of cases) {
 }
 
 console.log(`slugify: ${cases.length} cases passed`);
+
+const ignoreCases = [
+  [".obsidian/icon.png", undefined, true],
+  [".config/icon.png", ".config", true],
+  [".config", ".config", true],
+  [".config-copy/icon.png", ".config", false],
+  [".trash/deleted.png", ".config", true],
+  ["folder/.trash/deleted.png", ".config", true],
+  ["folder/image.png", ".config", false],
+];
+
+for (const [input, configDir, expected] of ignoreCases) {
+  assert.equal(shouldIgnore(input, configDir), expected, input);
+}
+
+console.log(`ignored paths: ${ignoreCases.length} cases passed`);

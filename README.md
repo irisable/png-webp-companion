@@ -20,7 +20,7 @@ links to use the WebP.
 - Uses a SHA-256 ledger to follow external Finder/File Explorer renames without
   confusing a real copy with a rename.
 - Never overwrites an existing PNG or WebP.
-- Ignores PNG files inside `.obsidian` and `.trash`.
+- Ignores PNG files inside the vault's configured settings folder and `.trash`.
 
 Filename normalization is enabled by default and can be disabled in the plugin
 settings. Existing images are not renamed or converted in bulk at startup.
